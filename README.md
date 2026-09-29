@@ -38,7 +38,7 @@ python3 scripts/build-offline.py      # preview-main.html — 14 страниц 
 
 ```bash
 export NEXT_PUBLIC_BASE_PATH=/имя-репозитория          # подпапка Pages
-export NEXT_PUBLIC_SITE_URL=https://владелец.github.io # адрес сайта
+export NEXT_PUBLIC_SITE_URL=https://владелец.github.io # адрес сайта, БЕЗ подпапки
 
 npm run build:static              # сборка в out/
 npm run check:static              # проверка адресов в сборке
@@ -49,7 +49,9 @@ python3 scripts/serve-static.py   # отдаёт out/ как GitHub Pages
 `npm run check:static` ищет то, что ломается только на живом хостинге: ссылки и
 `url()` без подпапки, адреса, ведущие в никуда, потерянные шрифты, canonical и
 `og:image` с чужим доменом. Ту же проверку выполняет workflow — сборка с
-нарушениями до Pages не доезжает.
+нарушениями до Pages не доезжает. Адрес сайта можно передать и вместе с подпапкой
+(`https://владелец.github.io/имя-репозитория`) — проверка и сборка приведут его
+к одному виду и путь не удвоится.
 
 `scripts/serve-static.py` отдаёт `out/` так же, как это делает GitHub Pages:
 в подпапке репозитория, без расширения `.html` и с `404.html` для несуществующих
