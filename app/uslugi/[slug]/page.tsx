@@ -8,6 +8,7 @@ import { Steps } from '@/components/Steps';
 import { BreadcrumbsJsonLd, ServiceJsonLd } from '@/components/JsonLd';
 import { services, serviceBySlug } from '@/lib/services';
 import { company, faq } from '@/lib/content';
+import { canonicalUrl } from '@/lib/site';
 
 /** Страницы услуг — статика: генерируются на этапе сборки, без лишнего JS. */
 export function generateStaticParams() {
@@ -21,7 +22,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   return {
     title: service.title,
     description: service.description,
-    alternates: { canonical: `/uslugi/${service.slug}` },
+    alternates: { canonical: canonicalUrl(`/uslugi/${service.slug}`) },
     openGraph: { title: `${service.title} — ГК «РОСЭКО»`, description: service.description },
   };
 }

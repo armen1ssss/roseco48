@@ -7,12 +7,13 @@ import { PriceTable } from '@/components/PriceTable';
 import { Steps } from '@/components/Steps';
 import { Contacts } from '@/components/Contacts';
 import { BreadcrumbsJsonLd } from '@/components/JsonLd';
+import { canonicalUrl } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: 'Цены на анализы: вода, почва, воздух, отходы',
   description:
     'Прайс по показателям: анализ воды, почвы, воздуха, отходов, замеры шума и радиации, природоохранные проекты. Стоимость отбора проб и выезда за город.',
-  alternates: { canonical: '/ceny' },
+  alternates: { canonical: canonicalUrl('/ceny') },
 };
 
 const crumbs = [

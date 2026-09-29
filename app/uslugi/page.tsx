@@ -8,12 +8,13 @@ import { Faq } from '@/components/Faq';
 import { Contacts } from '@/components/Contacts';
 import { BreadcrumbsJsonLd } from '@/components/JsonLd';
 import { services } from '@/lib/services';
+import { canonicalUrl } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: 'Услуги: анализы воды, почвы, воздуха и отходов',
   description:
     'Лабораторные исследования и природоохранная документация: анализ воды, почвы, воздуха, отходов, замеры шума и радиации, проекты НДВ, ПНООЛР, СЗЗ.',
-  alternates: { canonical: '/uslugi' },
+  alternates: { canonical: canonicalUrl('/uslugi') },
 };
 
 const crumbs = [

@@ -7,11 +7,12 @@ import { Contacts } from '@/components/Contacts';
 import { Faq } from '@/components/Faq';
 import { BreadcrumbsJsonLd, FaqJsonLd } from '@/components/JsonLd';
 import { company, faq, mapPoint } from '@/lib/content';
+import { canonicalUrl } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: 'Контакты: Липецк, ул. М.И. Неделина, 1В',
   description: `Телефон ${company.phoneFree}, ${company.email}. Адрес: ${company.addressFull}. График: ${company.hours}. Отбор проб по Липецку и области.`,
-  alternates: { canonical: '/kontakty' },
+  alternates: { canonical: canonicalUrl('/kontakty') },
 };
 
 const crumbs = [

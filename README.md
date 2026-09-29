@@ -37,14 +37,23 @@ python3 scripts/build-offline.py      # preview-main.html — 14 страниц 
 ### Проверить статику перед публикацией
 
 ```bash
-NEXT_PUBLIC_BASE_PATH=/имя-репозитория npm run build:static   # сборка в out/
-NEXT_PUBLIC_BASE_PATH=/имя-репозитория python3 scripts/serve-static.py
+export NEXT_PUBLIC_BASE_PATH=/имя-репозитория          # подпапка Pages
+export NEXT_PUBLIC_SITE_URL=https://владелец.github.io # адрес сайта
+
+npm run build:static              # сборка в out/
+npm run check:static              # проверка адресов в сборке
+python3 scripts/serve-static.py   # отдаёт out/ как GitHub Pages
 # → http://localhost:8000/имя-репозитория/
 ```
 
+`npm run check:static` ищет то, что ломается только на живом хостинге: ссылки и
+`url()` без подпапки, адреса, ведущие в никуда, потерянные шрифты, canonical и
+`og:image` с чужим доменом. Ту же проверку выполняет workflow — сборка с
+нарушениями до Pages не доезжает.
+
 `scripts/serve-static.py` отдаёт `out/` так же, как это делает GitHub Pages:
 в подпапке репозитория, без расширения `.html` и с `404.html` для несуществующих
-адресов. Это ловит битые пути до публикации.
+адресов.
 
 ## Структура
 
@@ -66,7 +75,10 @@ components/             18 компонентов, серверные по ум�
 lib/                    content.ts, services.ts, prices.ts, site.ts — контент и типы
 public/photos/          фотографии
 public/docs/            PDF-документы (сейчас заглушки)
-scripts/                check-mobile.mjs, check-a11y.mjs, check-perf.mjs,
+app/fonts/              Inter (woff2, latin + cyrillic) — подключён через
+                        next/font/local, сборка не ходит в Google Fonts
+scripts/                check-static.mjs — проверка адресов в out/ перед публикацией,
+                        check-mobile.mjs, check-a11y.mjs, check-perf.mjs,
                         make-doc-stubs.mjs, build-offline.py, build-all-in-one.py,
                         serve-static.py — локальная копия GitHub Pages
 .github/workflows/      deploy.yml — сборка и публикация на GitHub Pages
@@ -121,7 +133,7 @@ preview-*.html          офлайн-версии сайта одним файл
 | Фотографии | `public/photos/` | кадры временные, для макета: заменить своей съёмкой (≥2400 px по длинной стороне, для героя — тёмная зона слева). Правок в вёрстке не потребуется |
 | Адрес на карте | `lib/content.ts`, `mapPoint` | ссылка на виджет и на «Открыть на карте» |
 | Реквизиты на странице контактов | `app/kontakty/page.tsx` | те же плейсхолдеры, что в `company` |
-| Домен | `.env`: `NEXT_PUBLIC_SITE_URL` | используется в sitemap, robots и микроразметке |
+| Домен | переменная репозитория `NEXT_PUBLIC_SITE_URL` (Settings → Secrets and variables → Actions → Variables) | адрес сайта в canonical, sitemap, robots и микроразметке; для своего домена подпапка репозитория отключается автоматически |
 
 ## Публикация на GitHub Pages
 
@@ -141,23 +153,31 @@ preview-*.html          офлайн-версии сайта одним файл
 
 Что знает сборка:
 
-- `basePath` считается из имени репозитория (`/roseco48` для репозитория `roseco48`) —
-  переименование или форк ничего не ломает. Исключение: репозиторий вида
-  `<владелец>.github.io` публикуется в корне, и тогда `basePath` не нужен — это учтено;
-- `NEXT_PUBLIC_SITE_URL` подставляется в `sitemap.xml`, `robots.txt` и микроразметку,
-  чтобы в них стоял реальный адрес сайта, а не черновой домен;
+- подпапку (`NEXT_PUBLIC_BASE_PATH`) и адрес сайта (`NEXT_PUBLIC_SITE_URL`) workflow
+  считает сам из имени репозитория: `/roseco48` и `https://<владелец>.github.io/roseco48`.
+  Переименование, форк или перенос в другой аккаунт ничего не ломают;
+- репозиторий вида `<владелец>.github.io` публикуется в корне домена — тогда подпапка
+  пустая. Так же ведёт себя сайт на своём домене: задайте `NEXT_PUBLIC_SITE_URL`
+  переменной репозитория, и подпапка отключится сама;
+- адрес сайта подставляется в `canonical`, `og:image`, `sitemap.xml`, `robots.txt`
+  и микроразметку — поисковики видят настоящие адреса, а не черновой домен;
 - картинки отдаются как есть (`images.unoptimized`) — статический хостинг не умеет
-  сжимать их на лету, поэтому все размеры подобраны заранее.
-
-Если в имени репозитория есть заглавные буквы, укажите `NEXT_PUBLIC_BASE_PATH` вручную
-в workflow: адреса на Pages чувствительны к регистру.
+  сжимать их на лету, поэтому все размеры подобраны заранее;
+- шрифт Inter лежит в `app/fonts` и подключается через `next/font/local`: сборка не
+  обращается к `fonts.googleapis.com` и не падает, когда Google недоступен;
+- до публикации сборку проверяет `scripts/check-static.mjs` (`npm run check:static`):
+  адрес без подпапки, битая ссылка или потерянный шрифт останавливают деплой;
+- в артефакт попадает `.nojekyll` (шаг `Ensure .nojekyll` + `include-hidden-files`),
+  иначе Pages обработал бы выгрузку Jekyll'ом и выбросил папку `_next`.
 
 ### Если публиковать без Actions
 
 Можно собрать статику локально и загрузить папку `out/` вручную:
 
 ```bash
-NEXT_PUBLIC_BASE_PATH=/имя-репозитория npm run build:static
+NEXT_PUBLIC_BASE_PATH=/имя-репозитория \
+NEXT_PUBLIC_SITE_URL=https://владелец.github.io \
+npm run build:static
 ```
 
 Затем положить содержимое `out/` в ветку `gh-pages` (или в папку `/docs` ветки `main`)
@@ -184,13 +204,15 @@ git push -u origin main
 ## Производительность
 
 Статические страницы (21 маршрут), первый JS — 102–115 кБ на страницу,
-изображения в AVIF/WebP, шрифт Inter подключается локально через `next/font`.
+изображения в AVIF/WebP, шрифт Inter подключается локально (`next/font/local`, файлы в `app/fonts`) — сборка не зависит от Google Fonts.
 Смещений макета нет: у всех изображений и у карты заданы размеры.
 
 ## Проверено
 
 - `npm run typecheck` — без ошибок;
 - `npm run build` — 21 маршрут, ошибок нет;
+- `npm run build:static` + `npm run check:static` — статика собирается, все внутренние
+  адреса идут с подпапкой репозитория и ведут на существующие файлы;
 - `npm run check:mobile` — горизонтальной прокрутки нет, элементов за краем нет,
   все цели ≥44 px, все изображения загружаются и имеют `alt`, заголовки без пропусков;
 - `npm run check:a11y` — нарушений WCAG AA нет (в том числе контрасты) на 9 страницах

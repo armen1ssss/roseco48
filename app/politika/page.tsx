@@ -3,12 +3,13 @@ import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { PageHead } from '@/components/PageHead';
 import { company } from '@/lib/content';
+import { canonicalUrl } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: 'Политика обработки персональных данных',
   description: 'Как мы собираем, храним и используем персональные данные посетителей сайта.',
   robots: { index: false, follow: true },
-  alternates: { canonical: '/politika' },
+  alternates: { canonical: canonicalUrl('/politika') },
 };
 
 const crumbs = [
