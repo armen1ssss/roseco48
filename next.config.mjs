@@ -1,7 +1,8 @@
 /** @type {import('next').NextConfig} */
-const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
-// STATIC_EXPORT=1 — сборка статики для GitHub Pages (см. README, раздел «Публикация»)
-const staticExport = process.env.STATIC_EXPORT === '1';
+// Жёстко указываем путь к вашему репозиторию GitHub
+const basePath = '/roseco48';
+// Принудительно включаем режим статического экспорта для GitHub Pages
+const staticExport = true;
 
 const nextConfig = {
   reactStrictMode: true,
@@ -16,8 +17,8 @@ const nextConfig = {
     formats: ['image/avif', 'image/webp'],
     // Ширины под реальные экраны: от 360 до 1920. Источники ≥1500 px,
     // выше не поднимаем, чтобы не апскейлить и не жечь трафик.
-    deviceSizes: [360, 420, 480, 640, 768, 960, 1200, 1440, 1672],
-    imageSizes: [96, 128, 200, 256, 320, 384],
+    deviceSizes:,
+    imageSizes:,
     // Статический хостинг не умеет сжимать картинки на лету
     unoptimized: staticExport,
   },
