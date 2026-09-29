@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="400" viewBox="0 0 300 400" role="img" aria-label="Место для скана документа">
+  <rect width="300" height="400" fill="#F4F3EE"/>
+  <rect x="14" y="14" width="272" height="372" fill="none" stroke="#CFC9B8" stroke-width="2" stroke-dasharray="8 6"/>
+  <g fill="#8C866F" font-family="Arial, sans-serif" font-size="13" text-anchor="middle">
+    <text x="150" y="196">Здесь превью</text>
+    <text x="150" y="218">реального скана</text>
+  </g>
+  <g stroke="#D8D3C4" stroke-width="2">
+    <line x1="46" y1="262" x2="254" y2="262"/>
+    <line x1="46" y1="286" x2="254" y2="286"/>
+    <line x1="46" y1="310" x2="200" y2="310"/>
+  </g>
+</svg>

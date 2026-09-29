@@ -1,0 +1,29 @@
+{
+  "name": "ros-eco",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Корпоративный сайт испытательной лаборатории ГК «РОСЭКО» (Липецк)",
+  "scripts": {
+    "dev": "next dev -H 0.0.0.0 -p 3000",
+    "build": "next build",
+    "build:static": "STATIC_EXPORT=1 next build",
+    "start": "next start -H 0.0.0.0 -p 3000",
+    "typecheck": "tsc --noEmit",
+    "check:mobile": "node scripts/check-mobile.mjs",
+    "check:a11y": "node scripts/check-a11y.mjs",
+    "check:perf": "node scripts/check-perf.mjs"
+  },
+  "dependencies": {
+    "next": "15.5.4",
+    "react": "19.1.0",
+    "react-dom": "19.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "22.10.2",
+    "@types/react": "19.0.2",
+    "@types/react-dom": "19.0.2",
+    "axe-core": "^4.13.0",
+    "playwright": "^1.63.0",
+    "typescript": "5.7.2"
+  }
+}
