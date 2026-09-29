@@ -6,8 +6,9 @@
 # поэтому сборке передаются два адреса:
 #
 #   NEXT_PUBLIC_BASE_PATH — подпапка (/roseco48), из неё Next делает basePath,
-#   NEXT_PUBLIC_SITE_URL  — адрес сайта, он нужен canonical, sitemap.xml,
-#                           robots.txt и микроразметке.
+#   NEXT_PUBLIC_SITE_URL  — адрес сайта без подпапки (он нужен canonical,
+#                           sitemap.xml, robots.txt и микроразметке; подпапку
+#                           код добавляет сам).
 #
 # Оба значения считаются автоматически из имени репозитория. Если сайт переедет
 # на свой домен, задайте в Settings → Secrets and variables → Actions → Variables
@@ -61,15 +62,16 @@ jobs:
           repo="${GITHUB_REPOSITORY#*/}"
           owner="${GITHUB_REPOSITORY%%/*}"
 
+          # NEXT_PUBLIC_SITE_URL — это адрес сайта БЕЗ подпапки: саму подпапку
+          # добавляет код (lib/site.ts). Иначе путь удвоится.
           # Репозиторий <владелец>.github.io публикуется в корне домена,
           # остальные — в подпапке со своим именем.
           if [ "${repo,,}" = "${owner,,}.github.io" ]; then
             default_base_path=""
-            default_site_url="https://${owner,,}.github.io"
           else
             default_base_path="/${repo}"
-            default_site_url="https://${owner,,}.github.io/${repo}"
           fi
+          default_site_url="https://${owner,,}.github.io"
 
           # Свой домен отдаёт сайт из корня, поэтому подпапка убирается
           override_site_url="${OVERRIDE_SITE_URL%/}"

@@ -28,8 +28,13 @@ import { join } from 'node:path';
 
 const OUT = 'out';
 const BASE = (process.env.NEXT_PUBLIC_BASE_PATH ?? '').replace(/\/+$/, '');
+// Адрес сайта может прийти и как origin, и вместе с подпапкой
+// (https://<владелец>.github.io/roseco48) — подпапку убираем, она добавляется
+// ниже. Так же считает lib/site.ts, иначе адрес в проверке и в сборке
+// разойдутся, и рабочий сайт получит «Публиковать нельзя».
 const origin = (process.env.NEXT_PUBLIC_SITE_URL ?? '').replace(/\/+$/, '');
-const SITE = origin ? origin + BASE : '';
+const siteOrigin = BASE && origin.endsWith(BASE) ? origin.slice(0, -BASE.length) : origin;
+const SITE = siteOrigin ? siteOrigin + BASE : '';
 
 const problems = [];
 const notes = [];
