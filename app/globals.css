@@ -4,6 +4,24 @@
    Все контрасты посчитаны по WCAG 2.2 AA, значения — в комментариях.
    ========================================================================== */
 
+/* ---------- 0. Шрифт ----------
+   Inter (variable, 100–900) лежит в app/fonts и подключается через
+   next/font/local (см. app/layout.tsx). Сборка не ходит в Google Fonts:
+   и в CI, и на машине разработчика она работает без интернета — раньше
+   недоступность fonts.googleapis.com валила сборку целиком.
+
+   'Inter Fallback' — Arial с метриками Inter: пока woff2 грузится, текст
+   рисуется похожим по ширине шрифтом, поэтому подмена шрифта не двигает
+   вёрстку. override-значения — те, что Next.js считает для Inter. */
+@font-face {
+  font-family: 'Inter Fallback';
+  src: local('Arial'), local('Helvetica'), local('Liberation Sans');
+  ascent-override: 90.44%;
+  descent-override: 22.52%;
+  line-gap-override: 0%;
+  size-adjust: 107.12%;
+}
+
 /* ---------- 1. Токены ---------- */
 :root {
   /* Текст и фоны */
@@ -35,7 +53,7 @@
   --hatch: #EFEEE8;
 
   /* Типографика: размеры пересчитаны под мобильный первым */
-  --font-sans: var(--font-inter), 'Inter', 'Manrope', system-ui, -apple-system,
+  --font-sans: var(--font-inter), 'Inter Fallback', system-ui, -apple-system,
     'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   --fs-h1: clamp(28px, 7.4vw, 54px);
   --fs-h2: clamp(23px, 5.2vw, 38px);

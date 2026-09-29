@@ -6,12 +6,13 @@ import { Steps } from '@/components/Steps';
 import { Contacts } from '@/components/Contacts';
 import { BreadcrumbsJsonLd } from '@/components/JsonLd';
 import { industries } from '@/lib/content';
+import { canonicalUrl } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: 'Отраслевые решения: госсектор, промышленность, АПК',
   description:
     'Экологическое сопровождение для водоканалов, заводов, строительных компаний и агрохолдингов Липецкой области: анализы, замеры, проекты и отчётность.',
-  alternates: { canonical: '/otrasli' },
+  alternates: { canonical: canonicalUrl('/otrasli') },
 };
 
 const crumbs = [

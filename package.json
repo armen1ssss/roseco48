@@ -9,6 +9,7 @@
     "build:static": "STATIC_EXPORT=1 next build",
     "start": "next start -H 0.0.0.0 -p 3000",
     "typecheck": "tsc --noEmit",
+    "check:static": "node scripts/check-static.mjs",
     "check:mobile": "node scripts/check-mobile.mjs",
     "check:a11y": "node scripts/check-a11y.mjs",
     "check:perf": "node scripts/check-perf.mjs"

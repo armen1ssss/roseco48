@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { PageHead } from '@/components/PageHead';
@@ -9,12 +10,13 @@ import { Steps } from '@/components/Steps';
 import { Contacts } from '@/components/Contacts';
 import { BreadcrumbsJsonLd } from '@/components/JsonLd';
 import { company, trustFacts } from '@/lib/content';
+import { canonicalUrl } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: 'О лаборатории: испытательный центр и проектная группа в Липецке',
   description:
     'Лаборатория работает с 2010 года: 150 000 исследований, 1000+ проектов, аналитическое оборудование, резидент МБУ «Технопарк-Липецк» и участник ОЭЗ РУ «Липецк-Технополюс».',
-  alternates: { canonical: '/o-kompanii' },
+  alternates: { canonical: canonicalUrl('/o-kompanii') },
 };
 
 const crumbs = [
@@ -86,9 +88,9 @@ export default function AboutPage() {
               реестры.
             </p>
             <div className="btn-row" style={{ justifyContent: 'center' }}>
-              <a className="btn btn--primary" href="/dokumenty">
+              <Link className="btn btn--primary" href="/dokumenty">
                 Открыть документы
-              </a>
+              </Link>
             </div>
           </div>
         </section>

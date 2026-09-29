@@ -6,13 +6,15 @@ import { PageHead } from '@/components/PageHead';
 import { Docs } from '@/components/Docs';
 import { Contacts } from '@/components/Contacts';
 import { BreadcrumbsJsonLd } from '@/components/JsonLd';
+import { asset } from '@/lib/asset';
 import { company, documents } from '@/lib/content';
+import { canonicalUrl } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: 'Документы: аттестат аккредитации, область аккредитации, лицензия',
   description:
     'Аттестат аккредитации испытательной лаборатории, область аккредитации, лицензия Росгидромета. Скачать PDF и проверить в реестрах Росаккредитации и Росгидромета.',
-  alternates: { canonical: '/dokumenty' },
+  alternates: { canonical: canonicalUrl('/dokumenty') },
 };
 
 const crumbs = [
@@ -79,7 +81,7 @@ export default function DocumentsPage() {
             <ul className="mt-6">
               {documents.map((doc) => (
                 <li key={doc.id} className="small muted">
-                  {doc.title} — <a className="link" href={doc.href}>{doc.file}</a>
+                  {doc.title} — <a className="link" href={asset(doc.href)}>{doc.file}</a>
                 </li>
               ))}
             </ul>

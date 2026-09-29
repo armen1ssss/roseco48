@@ -9,7 +9,8 @@
  * unoptimized (он нужен статическому хостингу) — нет, поэтому пути к фото
  * и документам собираем через asset().
  */
-export const ASSET_PREFIX = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
+// Без завершающего слэша — так же считает префикс next.config.mjs
+export const ASSET_PREFIX = (process.env.NEXT_PUBLIC_BASE_PATH ?? '').replace(/\/+$/, '');
 
 export function asset(path: string): string {
   return `${ASSET_PREFIX}${path}`;
